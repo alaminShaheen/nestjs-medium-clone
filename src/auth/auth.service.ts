@@ -1,10 +1,10 @@
 import * as bcrypt from "bcrypt";
 import { BadRequestException, Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { ConfigService } from "@nestjs/config";
 import { UsersService } from "../users/users.service";
 import { errorMessages } from "../common/helpers/errorMessages";
 import { Tokens } from "./types/tokens.type";
+import { TokenConstantsService } from "../constants/token-constants.service";
 
 @Injectable()
 export class AuthService {
@@ -13,7 +13,7 @@ export class AuthService {
     constructor (
         private readonly usersService: UsersService,
         private readonly jwtService: JwtService,
-        private readonly configService: ConfigService
+        private readonly tokenConstantsService: TokenConstantsService
     ) {
     }
     
@@ -78,15 +78,15 @@ export class AuthService {
                 userId,
                 email
             }, {
-                expiresIn: "15m",
-                secret: this.configService.get<string>("ACCESS_TOKEN_SECRET")
+                expiresIn: TokenConstantsService.ACCESS_TOKEN_VALIDITY_DURATION,
+                secret: this.tokenConstantsService.ACCESS_TOKEN_SECRET
             }),
             this.jwtService.signAsync({
                 userId,
                 email
             }, {
-                expiresIn: "7d",
-                secret: this.configService.get<string>("REFRESH_TOKEN_SECRET")
+                expiresIn: TokenConstantsService.REFRESH_TOKEN_VALIDITY_DURATION,
+                secret: this.tokenConstantsService.REFRESH_TOKEN_SECRET
             })
         ]);
         return { accessToken, refreshToken };

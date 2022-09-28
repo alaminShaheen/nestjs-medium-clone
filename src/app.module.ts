@@ -7,6 +7,7 @@ import { TypeormConfig } from "./configs/typeorm.config";
 import { APP_PIPE } from "@nestjs/core";
 import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
+import { ConstantsModule } from "./constants/constants.module";
 
 @Module({
     imports: [
@@ -16,7 +17,8 @@ import { AuthModule } from "./auth/auth.module";
         }),
         TypeOrmModule.forRootAsync(TypeormConfig),
         UsersModule,
-        AuthModule
+        AuthModule,
+        ConstantsModule
     ],
     controllers: [AppController],
     providers: [
