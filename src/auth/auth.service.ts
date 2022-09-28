@@ -3,13 +3,8 @@ import { BadRequestException, Injectable, InternalServerErrorException, Logger }
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { UsersService } from "../users/users.service";
-import { errorMessages } from "../helpers/errorMessages";
+import { errorMessages } from "../common/helpers/errorMessages";
 import { Tokens } from "./types/tokens.type";
-
-interface TokenData {
-    userId: string;
-    iat: string;
-}
 
 @Injectable()
 export class AuthService {

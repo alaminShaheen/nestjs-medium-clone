@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException, NotFoundException } from "@ne
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "./user.entity";
 import { Repository } from "typeorm";
-import { errorMessages } from "../helpers/errorMessages";
+import { errorMessages } from "../common/helpers/errorMessages";
 
 @Injectable()
 export class UsersService {

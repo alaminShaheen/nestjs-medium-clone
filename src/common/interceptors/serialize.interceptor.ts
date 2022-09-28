@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, NestInterceptor, UseInterceptors } from "@nestjs/common";
-import { Observable, map } from "rxjs";
+import { map, Observable } from "rxjs";
 import { ClassConstructor, plainToInstance } from "class-transformer";
 
 // custom decorator to shorten serialize syntax

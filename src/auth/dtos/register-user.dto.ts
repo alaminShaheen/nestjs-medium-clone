@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
-import { dtoErrorMessages } from "../../helpers/dtoErrors";
-import { Match } from "../../decorators/match.decorator";
+import { dtoErrorMessages } from "../../common/helpers/dtoErrors";
+import { Match } from "../../common/decorators/match.decorator";
 
 export class RegisterUserDto {
     @IsNotEmpty({ message: dtoErrorMessages.isRequired(RegisterUserDto, "email") })

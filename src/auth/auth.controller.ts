@@ -1,11 +1,10 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Logger, Request, Post, Session, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpStatus, Logger, Post, Request, Session, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { RegisterUserDto } from "./dtos/register-user.dto";
 import { LoginUserDto } from "./dtos/login-user.dto";
 import { Tokens } from "./types/tokens.type";
-import { JwtRefreshAuthGuard } from "../guards/jwt-refresh-auth.guard";
-import { AuthGuard } from "@nestjs/passport";
-import { JwtAuthGuard } from "../guards/jwt-auth.guard";
+import { JwtRefreshAuthGuard } from "../common/guards/jwt-refresh-auth.guard";
+import { JwtAuthGuard } from "../common/guards/jwt-auth.guard";
 
 // @SerializeTo(UserDto)
 @Controller("auth")
