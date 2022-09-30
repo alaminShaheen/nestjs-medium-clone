@@ -24,13 +24,15 @@ import { AuthService } from "./auth.service";
 import { RegisterUserDto } from "./dtos/register-user.dto";
 import { LoginUserDto } from "./dtos/login-user.dto";
 import { Tokens } from "./dtos/tokens.dto";
-import { JwtRefreshAuthGuard } from "../common/guards/jwt-refresh-auth.guard";
-import { JwtAuthGuard } from "../common/guards/jwt-auth.guard";
+import { JwtRefreshAuthGuard } from "./guards/jwt-refresh-auth.guard";
+import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { CurrentUserInterceptor } from "../common/interceptors/current-user.interceptor";
 import { SerializeTo } from "../common/interceptors/serialize.interceptor";
 import { UserDto } from "../users/dtos/user.dto";
+import { PublicRoute } from "./decorators/public-route.decorator";
 
 @Controller("auth")
+@UseGuards(JwtAuthGuard)
 @ApiTags("Authentication")
 export class AuthController {
     private readonly logger = new Logger(AuthController.name);
@@ -40,6 +42,7 @@ export class AuthController {
     
     
     @Post("register")
+    @PublicRoute()
     @HttpCode(HttpStatus.CREATED)
     @ApiBody({ type: RegisterUserDto })
     @ApiCreatedResponse({
@@ -54,6 +57,7 @@ export class AuthController {
     
     
     @Post("login")
+    @PublicRoute()
     @HttpCode(HttpStatus.OK)
     @ApiBody({ type: LoginUserDto })
     @ApiOkResponse({ description: "The user has been successfully logged in.", type: Tokens })
@@ -67,7 +71,6 @@ export class AuthController {
     
     
     @Post("logout")
-    @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.OK)
     @ApiBearerAuth()
     @ApiOkResponse({ description: "The user has been successfully logged out", type: null })
@@ -81,6 +84,7 @@ export class AuthController {
     
     
     @Get("refresh")
+    @PublicRoute()
     @UseGuards(JwtRefreshAuthGuard)
     @HttpCode(HttpStatus.CREATED)
     @ApiBearerAuth()
@@ -94,7 +98,6 @@ export class AuthController {
     
     
     @Get("whoami")
-    @UseGuards(JwtAuthGuard)
     @UseInterceptors(CurrentUserInterceptor)
     @SerializeTo(UserDto)
     @HttpCode(HttpStatus.OK)

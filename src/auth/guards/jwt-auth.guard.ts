@@ -1,4 +1,5 @@
 import { ExecutionContext, Injectable, Logger, UnauthorizedException } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
 import { Observable } from "rxjs";
 import { ErrorMessagesService } from "../../error-messages/error-messages.service";
@@ -7,13 +8,29 @@ import { ErrorMessagesService } from "../../error-messages/error-messages.servic
 export class JwtAuthGuard extends AuthGuard("jwt") {
     private readonly logger: Logger = new Logger(JwtAuthGuard.name);
     
-    constructor (private readonly errorMessagesService: ErrorMessagesService) {
+    constructor (
+        private readonly errorMessagesService: ErrorMessagesService,
+        private readonly reflector: Reflector
+    ) {
         super();
     }
     
     canActivate (context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         // Add custom auth logic here
-        return super.canActivate(context);
+        // Returning true means authenticated
+        // Otherwise is not authorized and custom error handling done by handleRequest function
+        
+        // This line checks for routes (also known as handlers) first and then controller
+        // that have the "public" metadata set so that authentication won't be required
+        const isPublicRoute = this.reflector.getAllAndOverride(
+            "public",
+            [
+                context.getHandler(),
+                context.getClass()
+            ]
+        );
+        
+        return isPublicRoute ? true : super.canActivate(context);
     }
     
     handleRequest (err, user) {
