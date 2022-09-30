@@ -9,7 +9,7 @@ export const TypeormConfig: TypeOrmModuleAsyncOptions = {
         return {
             type: "postgres",
             database: databaseConstantsService.DB_NAME,
-            // host: databaseConstantsService.DB_HOST,
+            host: databaseConstantsService.DB_HOST,
             port: databaseConstantsService.DB_PORT,
             entities: ["dist/**/*.entity.js"],
             synchronize: databaseConstantsService.DB_SYNCHRONIZE,
