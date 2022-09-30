@@ -17,8 +17,9 @@ import { Tokens } from "./types/tokens.type";
 import { JwtRefreshAuthGuard } from "../common/guards/jwt-refresh-auth.guard";
 import { JwtAuthGuard } from "../common/guards/jwt-auth.guard";
 import { CurrentUserInterceptor } from "../common/interceptors/current-user.interceptor";
+import { SerializeTo } from "../common/interceptors/serialize.interceptor";
+import { UserDto } from "../users/dtos/user.dto";
 
-// @SerializeTo(UserDto)
 @Controller("auth")
 export class AuthController {
     private readonly logger = new Logger(AuthController.name);
@@ -33,11 +34,13 @@ export class AuthController {
         return await this.authService.registerLocal(body.email, body.password);
     }
     
+    @Get("whoami")
     @UseGuards(JwtAuthGuard)
     @UseInterceptors(CurrentUserInterceptor)
-    @Get("whoami")
-    async whoAmI () {
-        return "hello";
+    @SerializeTo(UserDto)
+    @HttpCode(HttpStatus.OK)
+    whoAmI (@Request() request): UserDto {
+        return request.user;
     }
     
     @Post("login")
@@ -47,18 +50,19 @@ export class AuthController {
         return await this.authService.loginLocal(body.email, body.password);
     }
     
-    @UseGuards(JwtAuthGuard)
     @Post("logout")
+    @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.OK)
-    async logout (@Request() request) {
+    async logout (@Request() request): Promise<void> {
         const user = request.user;
         return await this.authService.logout(user.userId);
     }
     
-    @UseGuards(JwtRefreshAuthGuard)
     @Post("refresh")
+    @UseGuards(JwtRefreshAuthGuard)
     @HttpCode(HttpStatus.OK)
-    async refreshToken () {
-        return this.authService.refreshToken();
+    async refreshToken (@Request() request): Promise<Tokens> {
+        const { userId, refreshToken } = request.user;
+        return this.authService.refreshToken(userId, refreshToken);
     }
 }

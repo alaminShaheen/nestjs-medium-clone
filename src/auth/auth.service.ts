@@ -1,5 +1,11 @@
 import * as bcrypt from "bcrypt";
-import { BadRequestException, Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
+import {
+    BadRequestException,
+    ForbiddenException,
+    Injectable,
+    InternalServerErrorException,
+    Logger
+} from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { UsersService } from "../users/users.service";
 import { Tokens } from "./types/tokens.type";
@@ -48,11 +54,10 @@ export class AuthService {
             if (!passwordsMatch) throw new BadRequestException(this.errorMessagesService.INVALID_CREDENTIALS_PROVIDED);
             
             const tokens = await this.generateTokens(user.id, user.email);
-            
+    
             await this.updateRefreshTokenHash(user.id, tokens.refreshToken);
-            
+    
             return tokens;
-            
         } catch (error) {
             this.logger.error(error);
             if (error instanceof BadRequestException) throw error;
@@ -60,12 +65,29 @@ export class AuthService {
         }
     }
     
-    async logout (userId: string) {
-        return await this.usersService.update(userId, { refreshToken: null });
+    async logout (userId: string): Promise<void> {
+        await this.usersService.update(userId, { refreshToken: null });
     }
     
-    async refreshToken () {
-    
+    async refreshToken (userId: string, refreshToken: string): Promise<Tokens> {
+        try {
+            const user = await this.usersService.findOneById(userId);
+            
+            if (!user) throw new ForbiddenException(this.errorMessagesService.FORBIDDEN_RESOURCE);
+            
+            const isRefreshTokenValid = await bcrypt.compare(refreshToken, user.refreshToken);
+            
+            if (!isRefreshTokenValid) throw new ForbiddenException(this.errorMessagesService.FORBIDDEN_RESOURCE);
+            
+            const tokens = await this.generateTokens(user.id, user.email);
+            await this.updateRefreshTokenHash(user.id, tokens.refreshToken);
+            
+            return tokens;
+        } catch (error) {
+            if (error instanceof ForbiddenException) throw error;
+            else throw new InternalServerErrorException(this.errorMessagesService.SERVER_ERROR);
+            
+        }
     }
     
     async updateRefreshTokenHash (userId: string, refreshToken: string) {

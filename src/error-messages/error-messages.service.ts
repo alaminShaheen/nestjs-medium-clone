@@ -23,6 +23,10 @@ export class ErrorMessagesService {
         return "User is not authenticated";
     }
     
+    get FORBIDDEN_RESOURCE () {
+        return "You don't have permission to access this server";
+    }
+    
     static FIELD_REQUIRED (fieldName: string) {
         return `${StringUtils.capitalize(fieldName)} is required`;
     }
