@@ -8,6 +8,7 @@ import { APP_PIPE } from "@nestjs/core";
 import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { ConstantsModule } from "./constants/constants.module";
+import { ErrorMessagesModule } from "./error-messages/error-messages.module";
 
 @Module({
     imports: [
@@ -18,7 +19,8 @@ import { ConstantsModule } from "./constants/constants.module";
         TypeOrmModule.forRootAsync(TypeormConfig),
         UsersModule,
         AuthModule,
-        ConstantsModule
+        ConstantsModule,
+        ErrorMessagesModule
     ],
     controllers: [AppController],
     providers: [

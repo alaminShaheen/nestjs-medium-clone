@@ -6,9 +6,15 @@ import { AuthController } from "./auth.controller";
 import { AccessTokenStrategy } from "./strategies/access-token.strategy";
 import { RefreshTokenStrategy } from "./strategies/refresh-token.strategy";
 import { ConstantsModule } from "../constants/constants.module";
+import { ErrorMessagesModule } from "../error-messages/error-messages.module";
 
 @Module({
-    imports: [UsersModule, JwtModule.register({}), ConstantsModule],
+    imports: [
+        UsersModule,
+        JwtModule.register({}),
+        ConstantsModule,
+        ErrorMessagesModule
+    ],
     providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
     controllers: [AuthController]
 })

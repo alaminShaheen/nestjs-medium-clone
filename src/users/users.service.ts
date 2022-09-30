@@ -2,11 +2,14 @@ import { Injectable, InternalServerErrorException, NotFoundException } from "@ne
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "./user.entity";
 import { Repository } from "typeorm";
-import { errorMessages } from "../common/helpers/errorMessages";
+import { ErrorMessagesService } from "../error-messages/error-messages.service";
 
 @Injectable()
 export class UsersService {
-    constructor (@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>) {
+    constructor (
+        @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
+        private readonly errorMessagesService: ErrorMessagesService
+    ) {
     }
     
     create (email: string, password: string, salt: string) {
@@ -25,14 +28,14 @@ export class UsersService {
     async update (userId: string, userInfo: Partial<UserEntity>) {
         try {
             const userToUpdate = await this.findOneById(userId);
-            
-            if (!userToUpdate) throw new NotFoundException(errorMessages.userDoesNotExist());
+    
+            if (!userToUpdate) throw new NotFoundException(this.errorMessagesService.USER_NOT_FOUND);
             
             Object.assign(userToUpdate, userInfo);
             return this.userRepository.save(userToUpdate);
         } catch (error) {
             if (error instanceof NotFoundException) throw error;
-            else throw new InternalServerErrorException(errorMessages.serverError());
+            else throw new InternalServerErrorException(this.errorMessagesService.SERVER_ERROR);
             
         }
     }

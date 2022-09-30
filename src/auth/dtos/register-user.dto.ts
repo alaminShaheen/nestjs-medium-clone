@@ -1,31 +1,35 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
-import { dtoErrorMessages } from "../../common/helpers/dtoErrors";
 import { Match } from "../../common/decorators/match.decorator";
+import { DtoErrorMessagesService } from "../../error-messages/dto-error-messages.service";
 
 export class RegisterUserDto {
-    @IsNotEmpty({ message: dtoErrorMessages.isRequired(RegisterUserDto, "email") })
-    @IsString({
-        message: dtoErrorMessages.mustBeType(RegisterUserDto, "email", "string")
+    @IsNotEmpty({
+        message: DtoErrorMessagesService.IS_REQUIRED(RegisterUserDto, "email")
     })
-    @IsEmail({}, { message: dtoErrorMessages.invalidEmail() })
+    @IsString({
+        message: DtoErrorMessagesService.MUST_BE_TYPE(RegisterUserDto, "email", "string")
+    })
+    @IsEmail({}, {
+        message: DtoErrorMessagesService.INVALID_FIELD(RegisterUserDto, "email")
+    })
     email: string;
     
     @IsNotEmpty({
-        message: dtoErrorMessages.isRequired(RegisterUserDto, "password")
+        message: DtoErrorMessagesService.IS_REQUIRED(RegisterUserDto, "password")
     })
     @IsString({
-        message: dtoErrorMessages.mustBeType(RegisterUserDto, "password", "string")
+        message: DtoErrorMessagesService.MUST_BE_TYPE(RegisterUserDto, "password", "string")
     })
     password: string;
     
     @IsNotEmpty({
-        message: dtoErrorMessages.isRequired(RegisterUserDto, "confirmPassword")
+        message: DtoErrorMessagesService.IS_REQUIRED(RegisterUserDto, "confirmPassword")
     })
     @IsString({
-        message: dtoErrorMessages.mustBeType(RegisterUserDto, "confirmPassword", "string")
+        message: DtoErrorMessagesService.MUST_BE_TYPE(RegisterUserDto, "confirmPassword", "string")
     })
     @Match(RegisterUserDto, (properties) => properties.password, {
-        message: dtoErrorMessages.notMatch(RegisterUserDto, "password", "confirmPassword")
+        message: DtoErrorMessagesService.NOT_MATCH(RegisterUserDto, "password", "confirmPassword")
     })
     confirmPassword: string;
 }

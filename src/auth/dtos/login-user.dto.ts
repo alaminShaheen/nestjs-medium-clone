@@ -1,19 +1,21 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
-import { dtoErrorMessages } from "../../common/helpers/dtoErrors";
+import { DtoErrorMessagesService } from "../../error-messages/dto-error-messages.service";
 
 export class LoginUserDto {
-    @IsNotEmpty({ message: dtoErrorMessages.isRequired(LoginUserDto, "email") })
+    @IsNotEmpty({ message: DtoErrorMessagesService.IS_REQUIRED(LoginUserDto, "email") })
     @IsString({
-        message: dtoErrorMessages.mustBeType(LoginUserDto, "email", "string")
+        message: DtoErrorMessagesService.MUST_BE_TYPE(LoginUserDto, "email", "string")
     })
-    @IsEmail({}, { message: dtoErrorMessages.invalidEmail() })
+    @IsEmail({}, {
+        message: DtoErrorMessagesService.INVALID_FIELD(LoginUserDto, "email")
+    })
     email: string;
     
     @IsNotEmpty({
-        message: dtoErrorMessages.isRequired(LoginUserDto, "password")
+        message: DtoErrorMessagesService.IS_REQUIRED(LoginUserDto, "password")
     })
     @IsString({
-        message: dtoErrorMessages.mustBeType(LoginUserDto, "password", "string")
+        message: DtoErrorMessagesService.MUST_BE_TYPE(LoginUserDto, "password", "string")
     })
     password: string;
 }

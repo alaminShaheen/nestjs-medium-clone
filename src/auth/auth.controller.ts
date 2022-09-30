@@ -1,10 +1,22 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Logger, Post, Request, Session, UseGuards } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Get,
+    HttpCode,
+    HttpStatus,
+    Logger,
+    Post,
+    Request,
+    UseGuards,
+    UseInterceptors
+} from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { RegisterUserDto } from "./dtos/register-user.dto";
 import { LoginUserDto } from "./dtos/login-user.dto";
 import { Tokens } from "./types/tokens.type";
 import { JwtRefreshAuthGuard } from "../common/guards/jwt-refresh-auth.guard";
 import { JwtAuthGuard } from "../common/guards/jwt-auth.guard";
+import { CurrentUserInterceptor } from "../common/interceptors/current-user.interceptor";
 
 // @SerializeTo(UserDto)
 @Controller("auth")
@@ -21,8 +33,10 @@ export class AuthController {
         return await this.authService.registerLocal(body.email, body.password);
     }
     
+    @UseGuards(JwtAuthGuard)
+    @UseInterceptors(CurrentUserInterceptor)
     @Get("whoami")
-    async whoAmI (@Session() session: Record<string, any>) {
+    async whoAmI () {
         return "hello";
     }
     

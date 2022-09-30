@@ -1,16 +1,16 @@
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
 import { Request } from "express";
 import { JwtPayloadType } from "../types/jwt-payload.type";
+import { TokenConstantsService } from "../../constants/token-constants.service";
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(Strategy, "jwt-refresh") {
-    constructor (private readonly configService: ConfigService) {
+    constructor (private readonly tokenConstantsService: TokenConstantsService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: configService.get<string>("REFRESH_TOKEN_SECRET"),
+            secretOrKey: tokenConstantsService.REFRESH_TOKEN_SECRET,
             ignoreExpiration: false,
             // This option does not destroy the token and instead passes it to request object
             // We are doing this so that we can hash and store the token in db so that when a
@@ -25,6 +25,7 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, "jwt-refres
         // "passReqToCallback" option being true
         const bearerToken = request.get("authorization");
         const refreshToken = bearerToken.replace("Bearer", "").trim();
+        // Doing so will attach payload and refreshToken in request object to user field
         return { ...payload, refreshToken };
     }
 }
