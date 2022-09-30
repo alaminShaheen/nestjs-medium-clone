@@ -13,9 +13,9 @@ export class AppController {
     @HttpCode(HttpStatus.OK)
     @ApiOkResponse({
         description: "App is running successfully.",
-        type: null
+        type: String
     })
-    healthcheck (): void {
-        return this.appService.getHello();
+    healthcheck (): string {
+        return this.appService.healthcheck();
     }
 }
