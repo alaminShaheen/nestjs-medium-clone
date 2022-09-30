@@ -1,7 +1,7 @@
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { Injectable } from "@nestjs/common";
-import { JwtPayloadType } from "../types/jwt-payload.type";
+import { JwtPayload } from "../models/jwt-payload.model";
 import { TokenConstantsService } from "../../constants/token-constants.service";
 
 @Injectable()
@@ -17,7 +17,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, "jwt") {
     }
     
     // decodedJwtPayload contains decoded information from the access token
-    validate (decodedJwtPayload: JwtPayloadType) {
+    validate (decodedJwtPayload: JwtPayload) {
         // Doing so will attach payload in request object to user field
         return decodedJwtPayload;
     }

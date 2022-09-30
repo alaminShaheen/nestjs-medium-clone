@@ -8,7 +8,7 @@ import {
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { UsersService } from "../users/users.service";
-import { Tokens } from "./types/tokens.type";
+import { Tokens } from "./dtos/tokens.dto";
 import { TokenConstantsService } from "../constants/token-constants.service";
 import { ErrorMessagesService } from "../error-messages/error-messages.service";
 
@@ -90,7 +90,7 @@ export class AuthService {
         }
     }
     
-    async updateRefreshTokenHash (userId: string, refreshToken: string) {
+    async updateRefreshTokenHash (userId: string, refreshToken: string): Promise<void> {
         const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
         await this.usersService.update(userId, { refreshToken: hashedRefreshToken });
     }
@@ -112,6 +112,6 @@ export class AuthService {
                 secret: this.tokenConstantsService.REFRESH_TOKEN_SECRET
             })
         ]);
-        return { accessToken, refreshToken };
+        return new Tokens(accessToken, refreshToken);
     }
 }

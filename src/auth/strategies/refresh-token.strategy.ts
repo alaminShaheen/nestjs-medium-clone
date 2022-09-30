@@ -2,7 +2,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { Injectable } from "@nestjs/common";
 import { Request } from "express";
-import { JwtPayloadType } from "../types/jwt-payload.type";
+import { JwtPayload } from "../models/jwt-payload.model";
 import { TokenConstantsService } from "../../constants/token-constants.service";
 
 @Injectable()
@@ -20,7 +20,7 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, "jwt-refres
         });
     }
     
-    validate (request: Request, payload: JwtPayloadType) {
+    validate (request: Request, payload: JwtPayload) {
         // Now we extract the token from the request object. It is already present due to
         // "passReqToCallback" option being true
         const bearerToken = request.get("authorization");
