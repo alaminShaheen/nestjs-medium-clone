@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
-import { DtoErrorMessagesService } from "../../error-messages/dto-error-messages.service";
+import { DtoErrorMessagesService } from "../../app-messages/dto-error-messages.service";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class LoginUserDto {

@@ -1,6 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus } from "@nestjs/common";
-import { AppService } from "./app.service";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
+import { AppService } from "./app.service";
+import { DocumentationMessagesService } from "./app-messages/documentation-messages.service";
 
 @Controller("healthcheck")
 @ApiTags("Healthcheck")
@@ -11,10 +12,7 @@ export class AppController {
     
     @Get()
     @HttpCode(HttpStatus.OK)
-    @ApiOkResponse({
-        description: "App is running successfully.",
-        type: String
-    })
+    @ApiOkResponse({ description: DocumentationMessagesService.SERVER_RUNNING, type: String })
     healthcheck (): string {
         return this.appService.healthcheck();
     }

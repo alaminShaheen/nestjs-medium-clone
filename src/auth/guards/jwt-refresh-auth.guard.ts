@@ -1,12 +1,12 @@
 import { AuthGuard } from "@nestjs/passport";
 import { ExecutionContext, Logger, UnauthorizedException } from "@nestjs/common";
-import { ErrorMessagesService } from "../../error-messages/error-messages.service";
+import { AppErrorMessagesService } from "../../app-messages/app-error-messages.service";
 import { Observable } from "rxjs";
 
 export class JwtRefreshAuthGuard extends AuthGuard("jwt-refresh") {
     private readonly logger: Logger = new Logger(JwtRefreshAuthGuard.name);
     
-    constructor (private readonly errorMessagesService: ErrorMessagesService) {
+    constructor (private readonly errorMessagesService: AppErrorMessagesService) {
         super();
     }
     

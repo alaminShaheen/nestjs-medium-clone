@@ -10,7 +10,7 @@ import { JwtService } from "@nestjs/jwt";
 import { UsersService } from "../users/users.service";
 import { Tokens } from "./dtos/tokens.dto";
 import { TokenConstantsService } from "../constants/token-constants.service";
-import { ErrorMessagesService } from "../error-messages/error-messages.service";
+import { AppErrorMessagesService } from "../app-messages/app-error-messages.service";
 
 @Injectable()
 export class AuthService {
@@ -20,7 +20,7 @@ export class AuthService {
         private readonly usersService: UsersService,
         private readonly jwtService: JwtService,
         private readonly tokenConstantsService: TokenConstantsService,
-        private readonly errorMessagesService: ErrorMessagesService
+        private readonly errorMessagesService: AppErrorMessagesService
     ) {
     }
     

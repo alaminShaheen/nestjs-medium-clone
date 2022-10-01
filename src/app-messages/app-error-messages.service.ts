@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { StringUtils } from "../common/utils/string.utils";
 
 @Injectable()
-export class ErrorMessagesService {
+export class AppErrorMessagesService {
     get EMAIL_EXISTS () {
         return "User with email already exists";
     }

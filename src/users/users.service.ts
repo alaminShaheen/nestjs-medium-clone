@@ -2,13 +2,13 @@ import { Injectable, InternalServerErrorException, NotFoundException } from "@ne
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "./user.entity";
 import { Repository } from "typeorm";
-import { ErrorMessagesService } from "../error-messages/error-messages.service";
+import { AppErrorMessagesService } from "../app-messages/app-error-messages.service";
 
 @Injectable()
 export class UsersService {
     constructor (
         @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
-        private readonly errorMessagesService: ErrorMessagesService
+        private readonly errorMessagesService: AppErrorMessagesService
     ) {
     }
     

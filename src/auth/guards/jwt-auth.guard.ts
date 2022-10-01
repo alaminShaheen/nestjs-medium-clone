@@ -2,14 +2,14 @@ import { ExecutionContext, Injectable, Logger, UnauthorizedException } from "@ne
 import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
 import { Observable } from "rxjs";
-import { ErrorMessagesService } from "../../error-messages/error-messages.service";
+import { AppErrorMessagesService } from "../../app-messages/app-error-messages.service";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard("jwt") {
     private readonly logger: Logger = new Logger(JwtAuthGuard.name);
     
     constructor (
-        private readonly errorMessagesService: ErrorMessagesService,
+        private readonly errorMessagesService: AppErrorMessagesService,
         private readonly reflector: Reflector
     ) {
         super();

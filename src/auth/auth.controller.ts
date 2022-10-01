@@ -30,6 +30,7 @@ import { CurrentUserInterceptor } from "../common/interceptors/current-user.inte
 import { SerializeTo } from "../common/interceptors/serialize.interceptor";
 import { UserDto } from "../users/dtos/user.dto";
 import { PublicRoute } from "./decorators/public-route.decorator";
+import { DocumentationMessagesService } from "../app-messages/documentation-messages.service";
 
 @Controller("auth")
 @UseGuards(JwtAuthGuard)
@@ -44,12 +45,12 @@ export class AuthController {
     @Post("register")
     @PublicRoute()
     @HttpCode(HttpStatus.CREATED)
-    @ApiBody({ type: RegisterUserDto })
+    @ApiBody({ type: RegisterUserDto, required: true, description: "hello" })
     @ApiCreatedResponse({
-        description: "The user has been successfully registered and logged in.",
+        description: DocumentationMessagesService.SUCCESSFUL_REGISTER,
         type: Tokens
     })
-    @ApiBadRequestResponse({ description: "Will occur if provided email already exists" })
+    @ApiBadRequestResponse({ description: DocumentationMessagesService.INVALID_REGISTER })
     async registerLocal (@Body() body: RegisterUserDto): Promise<Tokens> {
         this.logger.log("Registering user");
         return await this.authService.registerLocal(body.email, body.password);
@@ -59,10 +60,13 @@ export class AuthController {
     @Post("login")
     @PublicRoute()
     @HttpCode(HttpStatus.OK)
-    @ApiBody({ type: LoginUserDto })
-    @ApiOkResponse({ description: "The user has been successfully logged in.", type: Tokens })
+    @ApiBody({ type: LoginUserDto, required: true })
+    @ApiOkResponse({
+        description: DocumentationMessagesService.SUCCESSFUL_LOGIN,
+        type: Tokens
+    })
     @ApiBadRequestResponse({
-        description: "Will occur if provided email does not exist or if credentials are invalid"
+        description: DocumentationMessagesService.INVALID_LOGIN_CREDENTIALS
     })
     async loginLocal (@Body() body: LoginUserDto): Promise<Tokens> {
         this.logger.log("Signing in user");
@@ -73,10 +77,8 @@ export class AuthController {
     @Post("logout")
     @HttpCode(HttpStatus.OK)
     @ApiBearerAuth()
-    @ApiOkResponse({ description: "The user has been successfully logged out", type: null })
-    @ApiUnauthorizedResponse({
-        description: "Will occur if provided token is invalid or user is not logged in"
-    })
+    @ApiOkResponse({ description: DocumentationMessagesService.SUCCESSFUL_LOGOUT, type: null })
+    @ApiUnauthorizedResponse({ description: DocumentationMessagesService.UNAUTHORIZED })
     async logout (@Request() request): Promise<void> {
         const user = request.user;
         return await this.authService.logout(user.userId);
@@ -88,9 +90,9 @@ export class AuthController {
     @UseGuards(JwtRefreshAuthGuard)
     @HttpCode(HttpStatus.CREATED)
     @ApiBearerAuth()
-    @ApiCreatedResponse({ description: "New tokens have been generated for the user", type: Tokens })
-    @ApiForbiddenResponse({ description: "Will occur if provided token is invalid" })
-    @ApiUnauthorizedResponse({ description: "Will occur if user is not logged in" })
+    @ApiCreatedResponse({ description: DocumentationMessagesService.NEW_TOKEN_GENERATED, type: Tokens })
+    @ApiForbiddenResponse({ description: DocumentationMessagesService.INVALID_TOKENS })
+    @ApiUnauthorizedResponse({ description: DocumentationMessagesService.UNAUTHORIZED })
     async refreshToken (@Request() request): Promise<Tokens> {
         const { userId, refreshToken } = request.user;
         return this.authService.refreshToken(userId, refreshToken);
@@ -102,10 +104,8 @@ export class AuthController {
     @SerializeTo(UserDto)
     @HttpCode(HttpStatus.OK)
     @ApiBearerAuth()
-    @ApiOkResponse({ description: "Returns the current user logged in", type: UserDto })
-    @ApiUnauthorizedResponse({
-        description: "Will occur if provided token is invalid or user is not logged in"
-    })
+    @ApiOkResponse({ description: DocumentationMessagesService.CURRENT_USER, type: UserDto })
+    @ApiUnauthorizedResponse({ description: DocumentationMessagesService.UNAUTHORIZED })
     whoAmI (@Request() request): UserDto {
         return request.user;
     }

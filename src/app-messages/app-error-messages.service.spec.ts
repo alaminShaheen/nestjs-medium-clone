@@ -1,15 +1,15 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { ErrorMessagesService } from "./error-messages.service";
+import { AppErrorMessagesService } from "./app-error-messages.service";
 
 describe("ErrorMessagesService", () => {
-    let service: ErrorMessagesService;
+    let service: AppErrorMessagesService;
     
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [ErrorMessagesService]
+            providers: [AppErrorMessagesService]
         }).compile();
-        
-        service = module.get<ErrorMessagesService>(ErrorMessagesService);
+    
+        service = module.get<AppErrorMessagesService>(AppErrorMessagesService);
     });
     
     it("should be defined", () => {

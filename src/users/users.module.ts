@@ -3,10 +3,10 @@ import { UsersService } from "./users.service";
 import { UsersController } from "./users.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserEntity } from "./user.entity";
-import { ErrorMessagesModule } from "../error-messages/error-messages.module";
+import { AppMessagesModule } from "../app-messages/app-messages.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([UserEntity]), ErrorMessagesModule],
+    imports: [TypeOrmModule.forFeature([UserEntity]), AppMessagesModule],
     providers: [UsersService],
     controllers: [UsersController],
     exports: [UsersService]

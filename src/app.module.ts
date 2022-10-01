@@ -1,14 +1,14 @@
 import { BadRequestException, Module, ValidationPipe } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { TypeormConfig } from "./configs/typeorm.config";
 import { APP_PIPE } from "@nestjs/core";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { TypeormConfig } from "./configs/typeorm.config";
 import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { ConstantsModule } from "./constants/constants.module";
-import { ErrorMessagesModule } from "./error-messages/error-messages.module";
+import { AppMessagesModule } from "./app-messages/app-messages.module";
 
 @Module({
     imports: [
@@ -20,7 +20,7 @@ import { ErrorMessagesModule } from "./error-messages/error-messages.module";
         UsersModule,
         AuthModule,
         ConstantsModule,
-        ErrorMessagesModule
+        AppMessagesModule
     ],
     controllers: [AppController],
     providers: [

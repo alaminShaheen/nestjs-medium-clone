@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 import { Match } from "../../common/decorators/match.decorator";
-import { DtoErrorMessagesService } from "../../error-messages/dto-error-messages.service";
+import { DtoErrorMessagesService } from "../../app-messages/dto-error-messages.service";
 
 export class RegisterUserDto {
     @ApiProperty({
