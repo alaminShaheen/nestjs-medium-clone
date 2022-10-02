@@ -9,6 +9,8 @@ import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { ConstantsModule } from "./constants/constants.module";
 import { AppMessagesModule } from "./app-messages/app-messages.module";
+import { ArticlesModule } from "./articles/articles.module";
+import { FollowsModule } from "./follows/follows.module";
 
 @Module({
     imports: [
@@ -20,7 +22,9 @@ import { AppMessagesModule } from "./app-messages/app-messages.module";
         UsersModule,
         AuthModule,
         ConstantsModule,
-        AppMessagesModule
+        AppMessagesModule,
+        ArticlesModule,
+        FollowsModule
     ],
     controllers: [AppController],
     providers: [

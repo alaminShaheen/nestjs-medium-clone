@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class AppConstantsService {
-    constructor (private readonly configService: ConfigService) {
+    get ARTICLE_LIST_DEFAULT_LIMIT () {
+        return 20;
     }
 }

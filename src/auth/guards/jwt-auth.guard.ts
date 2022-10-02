@@ -9,7 +9,7 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     private readonly logger: Logger = new Logger(JwtAuthGuard.name);
     
     constructor (
-        private readonly errorMessagesService: AppErrorMessagesService,
+        private readonly appErrorMessagesService: AppErrorMessagesService,
         private readonly reflector: Reflector
     ) {
         super();
@@ -36,8 +36,8 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     handleRequest (err, user) {
         // You can throw an exception based on either "info" or "err" arguments
         if (err || !user) {
-            this.logger.error(this.errorMessagesService.USER_UNAUTHENTICATED);
-            throw err || new UnauthorizedException(this.errorMessagesService.USER_UNAUTHENTICATED);
+            this.logger.error(this.appErrorMessagesService.USER_UNAUTHENTICATED);
+            throw err || new UnauthorizedException(this.appErrorMessagesService.USER_UNAUTHENTICATED);
         }
         
         // Adds user to request object

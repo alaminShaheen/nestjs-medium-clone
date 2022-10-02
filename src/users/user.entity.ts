@@ -1,10 +1,11 @@
-import { Column, CreateDateColumn, Entity, Index, PrimaryColumn, UpdateDateColumn } from "typeorm";
-import { v4 as uuidv4 } from "uuid";
+import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ArticleEntity } from "../articles/article.entity";
+import { FollowEntity } from "../follows/follow.entity";
 
 
-@Entity()
+@Entity({ name: "users" })
 export class UserEntity {
-    @PrimaryColumn({ default: uuidv4() })
+    @PrimaryGeneratedColumn("uuid")
     public id: string;
     
     @Index({ unique: true })
@@ -26,7 +27,12 @@ export class UserEntity {
     @Column({ nullable: true })
     public refreshToken: string;
     
-    // profile
+    @OneToMany(() => ArticleEntity, (article) => article.author)
+    public articles: ArticleEntity[];
     
-    // articles
+    @OneToMany(() => FollowEntity, (follow) => follow.followerId)
+    public followers: FollowEntity[];
+    
+    @OneToMany(() => FollowEntity, (follow) => follow.followerId)
+    public followings: FollowEntity[];
 }

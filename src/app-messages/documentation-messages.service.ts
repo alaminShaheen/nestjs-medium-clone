@@ -52,4 +52,12 @@ export class DocumentationMessagesService {
     static get SERVER_RUNNING () {
         return "Server is up and running successfully.";
     }
+    
+    
+    //////////////////
+    // Articles
+    //////////////////
+    static get FETCH_ARTICLES () {
+        return "Returns articles according to query.";
+    }
 }
