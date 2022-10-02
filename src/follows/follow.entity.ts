@@ -1,7 +1,7 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from "../users/user.entity";
 
-@Entity()
+@Entity({ name: "follows" })
 export class FollowEntity {
     @PrimaryGeneratedColumn("uuid")
     followId: string;

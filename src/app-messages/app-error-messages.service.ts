@@ -27,6 +27,10 @@ export class AppErrorMessagesService {
         return "You don't have permission to access this server";
     }
     
+    get DATABASE_SEEDING () {
+        return "Database seeding failed";
+    }
+    
     static FIELD_REQUIRED (fieldName: string) {
         return `${StringUtils.capitalize(fieldName)} is required`;
     }

@@ -1,5 +1,5 @@
-import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class DatabaseConstantsService {
@@ -32,5 +32,13 @@ export class DatabaseConstantsService {
     
     get DB_SYNCHRONIZE (): boolean {
         return this.configService.get<boolean>("DB_SYNCHRONIZE");
+    }
+    
+    get DB_SEED_USER_COUNT (): Number {
+        return 5;
+    }
+    
+    get DB_SEED_POST_PER_USER_COUNT (): Number {
+        return 10;
     }
 }
