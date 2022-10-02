@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsInt, IsOptional, IsString } from "class-validator";
 import { DtoErrorMessagesService } from "../../app-messages/dto-error-messages.service";
+import { Transform } from "class-transformer";
 
 export class ArticleListQueryParamsDto {
     @ApiProperty({
@@ -30,10 +31,11 @@ export class ArticleListQueryParamsDto {
     @ApiProperty({
         type: Number,
         example: 5,
-        description: "The number of articles to be fetched in this request",
+        description: "The number of articles to be fetched in this request with default being 10",
         required: false,
-        default: 20
+        default: 10
     })
+    @Transform(({ value }) => parseInt(value))
     @IsOptional()
     @IsInt({
         message: DtoErrorMessagesService.MUST_BE_TYPE(ArticleListQueryParamsDto, "limit", "number")
@@ -43,13 +45,14 @@ export class ArticleListQueryParamsDto {
     @ApiProperty({
         type: Number,
         example: 2,
-        description: "The number of articles to be Offset/skipped while fetching (default is 0)",
+        description: "The page number for the paginated request with default being 0",
         required: false,
         default: 0
     })
     @IsOptional()
+    @Transform(({ value }) => parseInt(value))
     @IsInt({
         message: DtoErrorMessagesService.MUST_BE_TYPE(ArticleListQueryParamsDto, "limit", "number")
     })
-    public offset?: number;
+    public page?: number;
 }

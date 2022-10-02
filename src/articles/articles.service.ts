@@ -6,6 +6,7 @@ import { UsersService } from "../users/users.service";
 import { ArticleEntity } from "./article.entity";
 import { AppErrorMessagesService } from "../app-messages/app-error-messages.service";
 import { AppConstantsService } from "../constants/app-constants.service";
+import { Pagination } from "../shared/pagination/Pagination";
 
 @Injectable()
 export class ArticlesService {
@@ -19,16 +20,26 @@ export class ArticlesService {
     ) {
     }
     
-    async getArticleList (queries: ArticleListQueryParamsDto) {
+    async getArticleList (
+        queries: ArticleListQueryParamsDto
+    ): Promise<Pagination<ArticleEntity>> {
+        
         const whereCondition: FindOptionsWhere<ArticleEntity> =
             queries.authorId ? { authorId: queries.authorId } : undefined;
+        const limit = queries.limit || this.appConstantsService.ARTICLE_LIST_DEFAULT_LIMIT;
+        const page = queries.page || 0;
         
         try {
-            return await this.articleRepository.find({
+            const [data, total] = await this.articleRepository.findAndCount({
                 where: whereCondition,
                 order: { createdAt: "DESC" },
-                take: queries.limit || this.appConstantsService.ARTICLE_LIST_DEFAULT_LIMIT,
-                skip: queries.offset || 0
+                take: limit,
+                skip: page * limit
+            });
+            return new Pagination<ArticleEntity>({
+                total,
+                results: data,
+                hasMore: (page * limit + data.length) < total
             });
         } catch (error) {
             this.logger.error(error);

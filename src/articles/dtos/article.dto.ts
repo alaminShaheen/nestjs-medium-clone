@@ -55,7 +55,7 @@ export class ArticleDto {
         type: String,
         description: "Author Id of the author of the article"
     })
-    @Transform(({ obj }) => obj.author.id)
+    @Transform(({ obj }) => obj.authorId)
     @Expose()
     public authorId: string;
 }
