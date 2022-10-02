@@ -1,14 +1,13 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiPropertyOptional } from "@nestjs/swagger";
 import { IsInt, IsOptional, IsString } from "class-validator";
 import { DtoErrorMessagesService } from "../../app-messages/dto-error-messages.service";
 import { Transform } from "class-transformer";
 
 export class ArticleListQueryParamsDto {
-    @ApiProperty({
+    @ApiPropertyOptional({
         type: String,
-        example: "Sakib",
-        description: "Id of the author whose articles needs to be fetched",
-        required: false
+        example: "8b4a7636-b99c-4da8-89b5-af99b7e771dc",
+        description: "Id of the author whose articles needs to be fetched"
     })
     @IsOptional()
     @IsString({
@@ -16,10 +15,10 @@ export class ArticleListQueryParamsDto {
     })
     public authorId?: string;
     
-    @ApiProperty({
+    @ApiPropertyOptional({
         type: String,
         example: "python",
-        description: "Filter articles by tag name",
+        description: "Filter articles by tag name (Not implemented yet)",
         required: false
     })
     @IsOptional()
@@ -28,10 +27,9 @@ export class ArticleListQueryParamsDto {
     })
     public tag?: string;
     
-    @ApiProperty({
+    @ApiPropertyOptional({
         type: Number,
-        example: 5,
-        description: "The number of articles to be fetched in this request with default being 10",
+        description: "The number of articles to be fetched per request",
         required: false,
         default: 10
     })
@@ -42,10 +40,9 @@ export class ArticleListQueryParamsDto {
     })
     public limit?: number;
     
-    @ApiProperty({
+    @ApiPropertyOptional({
         type: Number,
-        example: 2,
-        description: "The page number for the paginated request with default being 0",
+        description: "The page number for the paginated result",
         required: false,
         default: 0
     })
