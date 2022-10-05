@@ -16,6 +16,7 @@ import {
     ApiBody,
     ApiCreatedResponse,
     ApiForbiddenResponse,
+    ApiInternalServerErrorResponse,
     ApiOkResponse,
     ApiTags,
     ApiUnauthorizedResponse
@@ -36,6 +37,7 @@ import { Request } from "express";
 @Controller("auth")
 @UseGuards(JwtAuthGuard)
 @ApiTags("Authentication")
+@ApiInternalServerErrorResponse({ description: DocumentationMessagesService.SERVER_ERROR })
 export class AuthController {
     private readonly logger = new Logger(AuthController.name);
     
