@@ -6,6 +6,18 @@ export class DocumentationMessagesService {
     }
     
     //////////////////
+    // General
+    //////////////////
+    
+    static get SERVER_ERROR () {
+        return "An internal server error has occurred.";
+    }
+    
+    static get FORBIDDEN_RESOURCE () {
+        return "User does not have permission to execute this action";
+    }
+    
+    //////////////////
     // Auth
     //////////////////
     
@@ -59,5 +71,25 @@ export class DocumentationMessagesService {
     //////////////////
     static get FETCH_ARTICLES () {
         return "Returns articles according to query.";
+    }
+    
+    static get FETCH_ARTICLE () {
+        return "Returns article according to query.";
+    }
+    
+    static get CREATE_ARTICLE () {
+        return "Creates an article.";
+    }
+    
+    static get ARTICLE_NOT_FOUND () {
+        return "Article not found";
+    }
+    
+    static get ARTICLE_UPDATED () {
+        return "Updates article";
+    }
+    
+    static get ARTICLE_DELETED () {
+        return "Deletes article";
     }
 }

@@ -19,4 +19,8 @@ export class DtoErrorMessagesService {
     static NOT_MATCH<T> (dtoType: ClassConstructor<T>, fieldName1: keyof T, fieldName2: keyof T) {
         return `${StringUtils.capitalize(fieldName1.toString())} and ${StringUtils.capitalize(fieldName2.toString())} don't match`;
     }
+    
+    static STRING_MAX_CHAR<T> (dtoType: ClassConstructor<T>, fieldName1: keyof T, length: number) {
+        return `${StringUtils.capitalize(fieldName1.toString())} cannot be grater than ${length} characters`;
+    }
 }

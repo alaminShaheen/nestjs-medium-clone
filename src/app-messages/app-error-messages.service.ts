@@ -23,12 +23,20 @@ export class AppErrorMessagesService {
         return "User is not authenticated";
     }
     
+    get FORBIDDEN () {
+        return "User does not have permission to access this server";
+    }
+    
     get FORBIDDEN_RESOURCE () {
-        return "You don't have permission to access this server";
+        return "User does not have permission to execute this action";
     }
     
     get DATABASE_SEEDING () {
         return "Database seeding failed";
+    }
+    
+    get RESOURCE_DOES_NOT_EXIST () {
+        return "Resource does not exist";
     }
     
     static FIELD_REQUIRED (fieldName: string) {

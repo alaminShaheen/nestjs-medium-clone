@@ -6,7 +6,7 @@ import {
     HttpStatus,
     Logger,
     Post,
-    Request,
+    Req,
     UseGuards,
     UseInterceptors
 } from "@nestjs/common";
@@ -28,9 +28,10 @@ import { JwtRefreshAuthGuard } from "./guards/jwt-refresh-auth.guard";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { CurrentUserInterceptor } from "../common/interceptors/current-user.interceptor";
 import { SerializeTo } from "../common/interceptors/serialize.interceptor";
-import { UserDto } from "../users/dtos/user.dto";
+import { UserResponseDto } from "../users/dtos/user-response.dto";
 import { PublicRoute } from "./decorators/public-route.decorator";
 import { DocumentationMessagesService } from "../app-messages/documentation-messages.service";
+import { Request } from "express";
 
 @Controller("auth")
 @UseGuards(JwtAuthGuard)
@@ -79,7 +80,7 @@ export class AuthController {
     @ApiBearerAuth()
     @ApiOkResponse({ description: DocumentationMessagesService.SUCCESSFUL_LOGOUT, type: null })
     @ApiUnauthorizedResponse({ description: DocumentationMessagesService.UNAUTHORIZED })
-    async logout (@Request() request): Promise<void> {
+    async logout (@Req() request): Promise<void> {
         const user = request.user;
         return await this.authService.logout(user.userId);
     }
@@ -93,7 +94,7 @@ export class AuthController {
     @ApiCreatedResponse({ description: DocumentationMessagesService.NEW_TOKEN_GENERATED, type: Tokens })
     @ApiForbiddenResponse({ description: DocumentationMessagesService.INVALID_TOKENS })
     @ApiUnauthorizedResponse({ description: DocumentationMessagesService.UNAUTHORIZED })
-    async refreshToken (@Request() request): Promise<Tokens> {
+    async refreshToken (@Req() request): Promise<Tokens> {
         const { userId, refreshToken } = request.user;
         return this.authService.refreshToken(userId, refreshToken);
     }
@@ -101,12 +102,12 @@ export class AuthController {
     
     @Get("whoami")
     @UseInterceptors(CurrentUserInterceptor)
-    @SerializeTo(UserDto)
+    @SerializeTo(UserResponseDto)
     @HttpCode(HttpStatus.OK)
     @ApiBearerAuth()
-    @ApiOkResponse({ description: DocumentationMessagesService.CURRENT_USER, type: UserDto })
+    @ApiOkResponse({ description: DocumentationMessagesService.CURRENT_USER, type: UserResponseDto })
     @ApiUnauthorizedResponse({ description: DocumentationMessagesService.UNAUTHORIZED })
-    whoAmI (@Request() request): UserDto {
-        return request.user;
+    whoAmI (@Req() request: Request): UserResponseDto {
+        return request.user as UserResponseDto;
     }
 }

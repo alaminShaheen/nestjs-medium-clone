@@ -73,11 +73,11 @@ export class AuthService {
         try {
             const user = await this.usersService.findOneById(userId);
             
-            if (!user) throw new ForbiddenException(this.errorMessagesService.FORBIDDEN_RESOURCE);
+            if (!user) throw new ForbiddenException(this.errorMessagesService.FORBIDDEN);
             
             const isRefreshTokenValid = await bcrypt.compare(refreshToken, user.refreshToken);
-            
-            if (!isRefreshTokenValid) throw new ForbiddenException(this.errorMessagesService.FORBIDDEN_RESOURCE);
+    
+            if (!isRefreshTokenValid) throw new ForbiddenException(this.errorMessagesService.FORBIDDEN);
             
             const tokens = await this.generateTokens(user.id, user.email);
             await this.updateRefreshTokenHash(user.id, tokens.refreshToken);

@@ -1,7 +1,7 @@
 import { Expose, Transform } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class ArticleDto {
+export class ArticleResponseDto {
     @ApiProperty({
         type: String,
         description: "Unique Id of the article"
@@ -31,14 +31,14 @@ export class ArticleDto {
     public body: string;
     
     @ApiProperty({
-        type: String,
+        type: Date,
         description: "Date of creation of the article"
     })
     @Expose()
     public createdAt: Date;
     
     @ApiProperty({
-        type: String,
+        type: Date,
         description: "Date of modification of the article"
     })
     @Expose()
